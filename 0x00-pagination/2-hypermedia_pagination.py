@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
-"""hypermedia_pagination"""
+"""2. hypermedia pagination"""
+
 import csv
 import math
-from typing import List, Tuple
+from typing import List, Tuple, Dict, Any
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
-    """method named get_page
-    integer arguments page with
-    default value 1 and page_size
-    """
+    """Returns a tuple of size two containing a start index
+    and an end index corresponding to the range of indexes"""
     return ((page - 1) * page_size, page * page_size)
 
 
@@ -21,26 +20,26 @@ class Server:
         self.__dataset = None
 
     def dataset(self) -> List[List]:
-        """dataset"""
+        """cached dataset"""
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
-                read = csv.reader(f)
-                dataset = [row for row in read]
+                reader = csv.reader(f)
+                dataset = [row for row in reader]
             self.__dataset = dataset[1:]
 
         return self.__dataset
 
     def get_page(self, page: int = 1, page_size: int = 10) -> List[List]:
-        """empty list should be returned"""
+        """returns appropriated paginated data based on inputs"""
         assert all([isinstance(page, int), isinstance(page_size, int)])
         assert page > 0 and page_size > 0
-        start_idx, end_idx = index_range(page, page_size)
-        return self.dataset()[start_idx: end_idx]
+        start_index, end_index = index_range(page, page_size)
+        return self.dataset()[start_index: end_index]
 
     def get_hyper(self,
                   page: int = 1,
                   page_size: int = 10) -> Dict[str, Any]:
-        """returns a dictionary containing hypermedia pagination"""
+        """returns a dict containing hypermedia pagination"""
         data = self.get_page(page, page_size)
         next_page = None if len(self.get_page(
             page + 1, page_size)) else page + 1
