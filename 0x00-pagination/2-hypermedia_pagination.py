@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """hypermedia_pagination"""
-
 import csv
 import math
 from typing import List, Tuple
+
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
