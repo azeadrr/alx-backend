@@ -2,7 +2,7 @@
 """hypermedia_pagination"""
 import csv
 import math
-from typing import List, Tuple, Dict, Any
+from typing import List, Tuple
 
 
 def index_range(page: int, page_size: int) -> Tuple[int, int]:
@@ -21,7 +21,7 @@ class Server:
         self.__dataset = None
 
     def dataset(self) -> List[List]:
-        """cached dataset"""
+        """dataset"""
         if self.__dataset is None:
             with open(self.DATA_FILE) as f:
                 read = csv.reader(f)
@@ -40,7 +40,7 @@ class Server:
     def get_hyper(self,
                   page: int = 1,
                   page_size: int = 10) -> Dict[str, Any]:
-        """returns a dictionary"""
+        """returns a dictionary containing hypermedia pagination"""
         data = self.get_page(page, page_size)
         next_page = None if len(self.get_page(
             page + 1, page_size)) else page + 1
