@@ -20,8 +20,8 @@ class LFUCache(BaseCaching):
             i += 1
         return None
 
-    def ht(self, key):
-        """update ht"""
+    def hit(self, key):
+        """update hit"""
         index = self.index(key)
         if index is None:
             return
@@ -46,7 +46,7 @@ class LFUCache(BaseCaching):
             if self.index(key) is None:
                 self.__tracking.append((key, 0))
             else:
-                self.ht(key)
+                self.hit(key)
             return
 
         if self.index(key) is None:
@@ -58,5 +58,5 @@ class LFUCache(BaseCaching):
 
     def get(self, key):
         """return the value in self.cache_data linked to key"""
-        self.ht(key)
+        self.hit(key)
         return self.cache_data.get(key, None)
