@@ -14,26 +14,26 @@ class LFUCache(BaseCaching):
     def index(self, key):
         """returns"""
         i = 0
-        for svd_key, cnt in self.__tracking:
-            if svd_key == key:
+        for saved_key, count in self.__tracking:
+            if saved_key == key:
                 return i
             i += 1
         return None
 
     def hit(self, key):
-        """update hit"""
+        """hit"""
         index = self.index(key)
         if index is None:
             return
-        _key, cnt = self.__tracking[index]
-        self.__tracking[index] = (_key, cnt + 1)
+        _key, count = self.__tracking[index]
+        self.__tracking[index] = (_key, count + 1)
 
     def pop(self):
         """assign to the dictionary self.cache_data"""
         from functools import reduce
-        mth = reduce(lambda x, y: x if x[1] <= y[1] else y,
+        match = reduce(lambda x, y: x if x[1] <= y[1] else y,
                        self.__tracking)
-        _key, cnt = self.__tracking.pop(self.__tracking.index(mth))
+        _key, count = self.__tracking.pop(self.__tracking.index(match))
         return _key
 
     def put(self, key, item):
